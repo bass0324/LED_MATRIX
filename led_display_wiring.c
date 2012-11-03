@@ -1,14 +1,7 @@
 // led_display.c
 //
 // Controlling LED display prototype with Raspberry Pi.
-//
-// Test with
-// gcc -o blink -I ../../src ../../src/bcm2835.c blink.c
-// sudo ./blink
-//
-// Build with
-// gcc -o blink blink.c -l bcm2835
-// sudo ./blink
+// gcc -o tempCheck tempCheck.c -I/usr/local/include -L/usr/local/lib -lwiringPi
 
 #include <wiringPi.h>
 #include <stdio.h>
@@ -50,15 +43,19 @@ void drawRect(const unsigned char x, const unsigned char y, const unsigned char 
 			  const unsigned char red, const unsigned char green, const unsigned char blue,
 			  const unsigned char mode);
 			  
+char getTemp(int wChar);
+			  
 PI_THREAD (timeToDraw)
 {
-	drawMap();
-	delayMicroseconds(10);
+	while(1)
+	{
+		drawMap();
+		delayMicroseconds(10);
+	}
 }
 
 int main(void)
 {
-	// Can compile with gcc -o program program.c -I/usr/local/include -L/usr/local/lib -lwiringPi
 	if (wiringPiSetup () == -1)
 		exit (1);
 
@@ -78,20 +75,23 @@ int main(void)
 	unsigned char pwm = 0;
 	
 	// Get Temperature Data from Raspberry Pi (will be implemented later)
-	unsigned char temp1 = 0;
-	unsigned char temp2 = 0;
-	unsigned char temp3 = 0;
+	unsigned char temp1 = getTemp(5);
+	unsigned char temp2 = getTemp(6);
+	unsigned char temp3 = getTemp(8);
 	
 	piThreadCreate(timeToDraw);
 	
 	while(1)
 	{
+		temp1 = getTemp(5);
+		temp2 = getTemp(6);
+		temp3 = getTemp(8);
 		drawChar(temp1,0,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 		drawChar(temp2,4,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 		drawChar('.',8,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 		drawChar(temp2,9,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 		drawChar('C',13,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		//drawMap();
+		delay(.2);
 	}
 	
 	return 0;
@@ -533,6 +533,32 @@ void drawRect(const unsigned char x, const unsigned char y, const unsigned char 
 			}
 		}
 }
+
+char getTemp(int wChar)
+{
+  FILE *fp;
+  int status;
+  char path[20];
+
+  /* Open the command for reading. */
+  fp = popen("/opt/vc/bin/vcgencmd measure_temp", "r");
+  if (fp == NULL) {
+    printf("Failed to run command\n" );
+    exit;
+  }
+
+  /* Read the output a line at a time - output it. */
+  //while (fgets(path, sizeof(path)-1, fp) != NULL) {
+  //  printf("%s", path);
+  //}
+
+  fscanf(fp,"%s",path);
+  //printf("%s",path);
+  /* close */
+  pclose(fp);
+  return path[wChar];
+}
+
 
 // Just Including Arduino Loop For Use Later
 // void loop()
