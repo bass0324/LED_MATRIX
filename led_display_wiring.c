@@ -49,9 +49,16 @@ void drawChar(const unsigned char val, const unsigned char x, const unsigned cha
 void drawRect(const unsigned char x, const unsigned char y, const unsigned char dx, const unsigned char dy,
 			  const unsigned char red, const unsigned char green, const unsigned char blue,
 			  const unsigned char mode);
+			  
+PI_THREAD (timeToDraw)
+{
+	drawMap();
+	delayMicroseconds(10);
+}
 
 int main(void)
 {
+	// Can compile with gcc -o program program.c -I/usr/local/include -L/usr/local/lib -lwiringPi
 	if (wiringPiSetup () == -1)
 		exit (1);
 
@@ -75,6 +82,8 @@ int main(void)
 	unsigned char temp2 = 0;
 	unsigned char temp3 = 0;
 	
+	piThreadCreate(timeToDraw);
+	
 	while(1)
 	{
 		drawChar(temp1,0,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
@@ -82,10 +91,10 @@ int main(void)
 		drawChar('.',8,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 		drawChar(temp2,9,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 		drawChar('C',13,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		drawMap();
+		//drawMap();
 	}
 	
-	return 0
+	return 0;
 }
 
 // Functions
