@@ -527,9 +527,9 @@ void drawRect(const unsigned char x, const unsigned char y, const unsigned char 
 			  const unsigned char red, const unsigned char green, const unsigned char blue,
 			  const unsigned char mode)
 {
-		for(col = max(x, 0) ; col < x + dx && col < COLS; col++)
+		for(col = 0 ; col < x + dx && col < COLS; col++)
 		{
-			for(row = max(y, 0) ; row < y + dy && row < ROWS; row++)
+			for(row = 0 ; row < y + dy && row < ROWS; row++)
 			{
 				updatePixel(col, row, CLR_RED, red, mode);
 				updatePixel(col, row, CLR_GREEN, green, mode);
