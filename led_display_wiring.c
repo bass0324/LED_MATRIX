@@ -84,6 +84,10 @@ int main(void)
 	pinMode(P_LATCH, OUTPUT);
 	pinMode(P_CLK, OUTPUT);
 	
+	int bcol = PWM_MAX;
+    int rcol = 0;
+    int gcol = 0;
+	
 	//x = piThreadCreate(timeToDraw);
 	//if (x != 0)
     //   printf ("it didn't start\n")
@@ -99,6 +103,13 @@ int main(void)
 	//	drawChar(temp2,9,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 	//	drawChar('C',13,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 	//	delay(.2);
+	//  if (bcol < PWM_MAX && gcol == 0 && rcol == 0){bcol++;}
+        if (bcol == PWM_MAX && gcol == 0 && rcol < PWM_MAX){rcol++;}
+        else if (bcol > 0 && gcol == 0 && rcol == PWM_MAX){bcol--;}
+        else if (bcol == 0 && gcol < PWM_MAX && rcol == PWM_MAX){gcol++;}
+        else if (bcol == 0 && gcol == PWM_MAX && rcol > 0){rcol--;}
+        else if (bcol < PWM_MAX && gcol == PWM_MAX && rcol == 0){bcol++;}
+        else if (bcol == PWM_MAX && gcol > 0 && rcol == 0){gcol--;}
 		for(cols = 0; cols < COLS; cows++)
         {
 			for(rows = 0; rows < ROWS; rows++)
@@ -526,7 +537,7 @@ void drawChar(const unsigned char val, const unsigned char x, const unsigned cha
 		//for(char row = max(0, -y); row < 5 && row + y < ROWS; row++)
 		for(rows = 0; rows < 5 && rows + y < ROWS; rows++)
 		{
-			if (digitMask[col] & 1 << row) {
+			if (digitMask[cols] & 1 << rows) {
 				updatePixel(cols + x, rows + y, CLR_RED, red, mode);
 				updatePixel(cols + x, rows + y, CLR_GREEN, green, mode);
 				updatePixel(cols + x, rows + y, CLR_BLUE, blue, mode);
