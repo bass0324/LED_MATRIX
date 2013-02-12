@@ -110,7 +110,7 @@ int main(void)
         else if (bcol == 0 && gcol == PWM_MAX && rcol > 0){rcol--;}
         else if (bcol < PWM_MAX && gcol == PWM_MAX && rcol == 0){bcol++;}
         else if (bcol == PWM_MAX && gcol > 0 && rcol == 0){gcol--;}
-		for(cols = 0; cols < COLS; cows++)
+		for(cols = 0; cols < COLS; cols++)
         {
 			for(rows = 0; rows < ROWS; rows++)
 			{
