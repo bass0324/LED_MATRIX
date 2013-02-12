@@ -99,13 +99,13 @@ int main(void)
 	//	drawChar(temp2,9,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 	//	drawChar('C',13,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
 	//	delay(.2);
-		for(cols = 0; c < COLS; c++)
+		for(cols = 0; cols < COLS; cows++)
         {
-			for(rows = 0; r < ROWS; r++)
+			for(rows = 0; rows < ROWS; rows++)
 			{
-				led[c][r][CLR_BLUE] = bcol;
-				led[c][r][CLR_RED] = rcol;
-				led[c][r][CLR_GREEN] = gcol;
+				led[cols][rows][CLR_BLUE] = bcol;
+				led[cols][rows][CLR_RED] = rcol;
+				led[cols][rows][CLR_GREEN] = gcol;
 			}
         }
 		drawMap();
@@ -215,7 +215,7 @@ void drawMap()
 	}
 
 	if (cold++==COLS) {
-	   col=0;
+	   cold=0;
 	  //check this, if not move back below pwm
 	if (pwm++==PWM_MAX)
 	{
