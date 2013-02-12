@@ -83,7 +83,9 @@ int main(void)
 	pinMode(P_LATCH, OUTPUT);
 	pinMode(P_CLK, OUTPUT);
 	
-	piThreadCreate(timeToDraw);
+	x = piThreadCreate(timeToDraw);
+	if (x != 0)
+       printf ("it didn't start\n")
 	
 	while(1)
 	{
