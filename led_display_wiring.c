@@ -48,6 +48,18 @@ void drawRect(const unsigned char x, const unsigned char y, const unsigned char 
 			  const unsigned char mode);
 			  
 char getTemp(int wChar);
+
+// Matrix Data
+enum {CLR_RED, CLR_GREEN, CLR_BLUE};
+unsigned char led[COLS][ROWS][CLRS];
+
+enum {MODE_SET, MODE_ADD, MODE_SUB, MODE_MULT, MODE_DIV};
+unsigned char pwm = 0;
+
+// Get Temperature Data from Raspberry Pi (will be implemented later)
+unsigned char temp1 = getTemp(5);
+unsigned char temp2 = getTemp(6);
+unsigned char temp3 = getTemp(8);
 			  
 PI_THREAD (timeToDraw)
 {
@@ -70,18 +82,6 @@ int main(void)
 	pinMode(P_PWR, OUTPUT);
 	pinMode(P_LATCH, OUTPUT);
 	pinMode(P_CLK, OUTPUT);
-	
-	// Matrix Data
-	enum {CLR_RED, CLR_GREEN, CLR_BLUE};
-	unsigned char led[COLS][ROWS][CLRS];
-
-	enum {MODE_SET, MODE_ADD, MODE_SUB, MODE_MULT, MODE_DIV};
-	unsigned char pwm = 0;
-	
-	// Get Temperature Data from Raspberry Pi (will be implemented later)
-	unsigned char temp1 = getTemp(5);
-	unsigned char temp2 = getTemp(6);
-	unsigned char temp3 = getTemp(8);
 	
 	piThreadCreate(timeToDraw);
 	
