@@ -9,9 +9,9 @@
 #include <stdint.h>
 
 // Define GPIO Pins
-#define P_RED 12
-#define P_GREEN 13
-#define P_BLUE 14
+#define P_RED 0
+#define P_GREEN 2
+#define P_BLUE 3
 #define P_PWR 8
 #define P_LATCH 9
 #define P_CLK 7
