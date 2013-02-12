@@ -24,8 +24,9 @@
 #define PWM_MAX COLS
 
 int i;
-unsigned char col;
-unsigned char row;
+unsigned char cols;
+unsigned char rows;
+static unsigned char cold = 0;
 
 // Declare Functions Prior to Main
 void horizGrad(const unsigned char clr, const unsigned char dir);
@@ -71,9 +72,9 @@ int main(void)
 		exit (1);
 	
 	// Get Temperature Data from Raspberry Pi (will be implemented later)
-	unsigned char temp1 = getTemp(5);
-	unsigned char temp2 = getTemp(6);
-	unsigned char temp3 = getTemp(8);
+//	unsigned char temp1 = getTemp(5);
+//	unsigned char temp2 = getTemp(6);
+//	unsigned char temp3 = getTemp(8);
 
 	// Set RPI data pins to be output
 	pinMode(P_RED, OUTPUT);
@@ -89,15 +90,24 @@ int main(void)
 	
 	while(1)
 	{
-		temp1 = getTemp(5);
-		temp2 = getTemp(6);
-		temp3 = getTemp(8);
-		drawChar(temp1,0,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		drawChar(temp2,4,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		drawChar('.',8,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		drawChar(temp2,9,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		drawChar('C',13,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
-		delay(.2);
+	//	temp1 = getTemp(5);
+	//	temp2 = getTemp(6);
+	//	temp3 = getTemp(8);
+	//	drawChar(temp1,0,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
+	//	drawChar(temp2,4,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
+	//	drawChar('.',8,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
+	//	drawChar(temp2,9,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
+	//	drawChar('C',13,2,PWM_MAX,PWM_MAX,PWM_MAX,MODE_SET);
+	//	delay(.2);
+		for(cols = 0; c < COLS; c++)
+        {
+			for(rows = 0; r < ROWS; r++)
+			{
+				led[c][r][CLR_BLUE] = bcol;
+				led[c][r][CLR_RED] = rcol;
+				led[c][r][CLR_GREEN] = gcol;
+			}
+        }
 	}
 	
 	return 0;
@@ -106,11 +116,11 @@ int main(void)
 // Functions
 void horizGrad(const unsigned char clr, const unsigned char dir)
 {
-	for(col = 0; col < COLS; col++)
+	for(cols = 0; cols < COLS; col++)
 	{
-		for(row = 0; row < ROWS; row++)
+		for(rows = 0; rows < ROWS; row++)
 		{
-			led[col][row][clr] = (dir ? col : COLS - col) *
+			led[cols][rows][clr] = (dir ? cols : COLS - cols) *
 				((float)PWM_MAX / COLS);
 		}
 	} 
@@ -118,11 +128,11 @@ void horizGrad(const unsigned char clr, const unsigned char dir)
 
 void vertGrad(const unsigned char clr, const unsigned char dir)
 {
-	for(col = 0; col < COLS; col++)
+	for(cols = 0; cols < COLS; col++)
 	{
-		for(row = 0; row < ROWS; row++)
+		for(rows = 0; rows < ROWS; row++)
 		{
-			led[col][row][clr] = (dir ? row : ROWS - row) * 
+			led[cols][rows][clr] = (dir ? rows : ROWS - rows) * 
 				((float)PWM_MAX / ROWS);
 		}
 	} 
@@ -174,14 +184,13 @@ void setColors(const unsigned char col, const unsigned char row)
 
 void drawMap()
 {
-	static unsigned char col = 0;
 	//for(unsigned char col=0; col < COLS; col++)
 	{
 		char c = COLS - 1;
 
 		for(; c >= ROWS; c--)
 		{
-			if (c == col) {
+			if (c == cold) {
 				pulseOnPwr();
 			}
 			else {
@@ -191,9 +200,9 @@ void drawMap()
 
 		for(; c >= 0; c--)
 		{
-			setColors(col, c);
+			setColors(cold, c);
 
-			if (c == col) {
+			if (c == cold) {
 				pulseOnPwr();
 			}
 			else {
@@ -204,7 +213,7 @@ void drawMap()
 		pulseLatch();
 	}
 
-	if (col++==COLS) {
+	if (cold++==COLS) {
 	   col=0;
 	  //check this, if not move back below pwm
 	if (pwm++==PWM_MAX)
@@ -511,15 +520,15 @@ void drawChar(const unsigned char val, const unsigned char x, const unsigned cha
 
 
 	//for(char col = max(0, -x); col < 3 && col + x < COLS; col++)
-	for(col = 0; col < 3 && col + x < COLS; col++)
+	for(cols = 0; cols < 3 && cols + x < COLS; cols++)
 	{
 		//for(char row = max(0, -y); row < 5 && row + y < ROWS; row++)
-		for(row = 0; row < 5 && row + y < ROWS; row++)
+		for(rows = 0; rows < 5 && rows + y < ROWS; rows++)
 		{
 			if (digitMask[col] & 1 << row) {
-				updatePixel(col + x, row + y, CLR_RED, red, mode);
-				updatePixel(col + x, row + y, CLR_GREEN, green, mode);
-				updatePixel(col + x, row + y, CLR_BLUE, blue, mode);
+				updatePixel(cols + x, rows + y, CLR_RED, red, mode);
+				updatePixel(cols + x, rows + y, CLR_GREEN, green, mode);
+				updatePixel(cols + x, rows + y, CLR_BLUE, blue, mode);
 			}
 		}
 	}
@@ -529,13 +538,13 @@ void drawRect(const unsigned char x, const unsigned char y, const unsigned char 
 			  const unsigned char red, const unsigned char green, const unsigned char blue,
 			  const unsigned char mode)
 {
-		for(col = 0 ; col < x + dx && col < COLS; col++)
+		for(cols = 0 ; cols < x + dx && cols < COLS; cols++)
 		{
-			for(row = 0 ; row < y + dy && row < ROWS; row++)
+			for(rows = 0 ; rows < y + dy && rows < ROWS; rows++)
 			{
-				updatePixel(col, row, CLR_RED, red, mode);
-				updatePixel(col, row, CLR_GREEN, green, mode);
-				updatePixel(col, row, CLR_BLUE, blue, mode);
+				updatePixel(cols, rows, CLR_RED, red, mode);
+				updatePixel(cols, rows, CLR_GREEN, green, mode);
+				updatePixel(cols, rows, CLR_BLUE, blue, mode);
 			}
 		}
 }
