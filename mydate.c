@@ -1,31 +1,35 @@
+#include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 char getTemp(int wChar);
-char myTemp1;
-char myTemp2;
-char myTemp3;
+char myTime1;
+char myTime2;
+char myTime3;
+char myTime4;
 
 int main( int argc, char *argv[] )
 {
 while(1)
 {
- myTemp1 = getTemp(5);
- myTemp2 = getTemp(6);
- myTemp3 = getTemp(8);
- printf("%c%c.%c /n",myTemp1,myTemp2,myTemp3);
+ myTime1 = getTime(12);
+ myTime2 = getTime(13);
+ myTime3 = getTime(15);
+ myTime4 = getTime(16);
+ printf("%c%c:%c%c /n",myTime1,myTime2,myTime3,myTime4);
+ delay(.2);
 }
  return 0;
 }
 
-char getTemp(int wChar)
+char getTime(int wChar)
 {
   FILE *fp;
   int status;
-  char path[20];
+  char path[50];
 
   /* Open the command for reading. */
-  fp = popen("/opt/vc/bin/vcgencmd measure_temp", "r");
+  fp = popen("date", "r");
   if (fp == NULL) {
     printf("Failed to run command\n" );
     exit;

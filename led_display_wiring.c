@@ -632,7 +632,7 @@ char getTemp(int wChar)
       // rcol = 0;
       // gcol = 0;
       // }
-      if (bcol < PWM_MAX && gcol == 0 && rcol == 0){bcol++;}
+      //if (bcol < PWM_MAX && gcol == 0 && rcol == 0){bcol++;}
       // if (bcol == PWM_MAX && gcol == 0 && rcol < PWM_MAX){rcol++;}
       // else if (bcol > 0 && gcol == 0 && rcol == PWM_MAX){bcol--;}
       // else if (bcol == 0 && gcol < PWM_MAX && rcol == PWM_MAX){gcol++;}
