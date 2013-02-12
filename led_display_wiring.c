@@ -23,6 +23,10 @@
 
 #define PWM_MAX COLS
 
+int i;
+unsigned char col;
+unsigned char row;
+
 // Declare Functions Prior to Main
 void horizGrad(const unsigned char clr, const unsigned char dir);
 void vertGrad(const unsigned char clr, const unsigned char dir);
@@ -505,10 +509,10 @@ void drawChar(const unsigned char val, const unsigned char x, const unsigned cha
 
 
 	//for(char col = max(0, -x); col < 3 && col + x < COLS; col++)
-	for(unsigned char col = 0; col < 3 && col + x < COLS; col++)
+	for(col = 0; col < 3 && col + x < COLS; col++)
 	{
 		//for(char row = max(0, -y); row < 5 && row + y < ROWS; row++)
-		for(unsigned char row = 0; row < 5 && row + y < ROWS; row++)
+		for(row = 0; row < 5 && row + y < ROWS; row++)
 		{
 			if (digitMask[col] & 1 << row) {
 				updatePixel(col + x, row + y, CLR_RED, red, mode);
@@ -523,9 +527,9 @@ void drawRect(const unsigned char x, const unsigned char y, const unsigned char 
 			  const unsigned char red, const unsigned char green, const unsigned char blue,
 			  const unsigned char mode)
 {
-		for(unsigned char col = max(x, 0) ; col < x + dx && col < COLS; col++)
+		for(col = max(x, 0) ; col < x + dx && col < COLS; col++)
 		{
-			for(unsigned char row = max(y, 0) ; row < y + dy && row < ROWS; row++)
+			for(row = max(y, 0) ; row < y + dy && row < ROWS; row++)
 			{
 				updatePixel(col, row, CLR_RED, red, mode);
 				updatePixel(col, row, CLR_GREEN, green, mode);
