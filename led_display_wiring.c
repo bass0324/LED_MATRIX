@@ -55,11 +55,6 @@ unsigned char led[COLS][ROWS][CLRS];
 
 enum {MODE_SET, MODE_ADD, MODE_SUB, MODE_MULT, MODE_DIV};
 unsigned char pwm = 0;
-
-// Get Temperature Data from Raspberry Pi (will be implemented later)
-unsigned char temp1 = getTemp(5);
-unsigned char temp2 = getTemp(6);
-unsigned char temp3 = getTemp(8);
 			  
 PI_THREAD (timeToDraw)
 {
@@ -74,6 +69,11 @@ int main(void)
 {
 	if (wiringPiSetup () == -1)
 		exit (1);
+	
+	// Get Temperature Data from Raspberry Pi (will be implemented later)
+	unsigned char temp1 = getTemp(5);
+	unsigned char temp2 = getTemp(6);
+	unsigned char temp3 = getTemp(8);
 
 	// Set RPI data pins to be output
 	pinMode(P_RED, OUTPUT);
