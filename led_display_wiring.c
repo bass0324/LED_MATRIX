@@ -84,9 +84,9 @@ int main(void)
 	pinMode(P_LATCH, OUTPUT);
 	pinMode(P_CLK, OUTPUT);
 	
-	x = piThreadCreate(timeToDraw);
-	if (x != 0)
-       printf ("it didn't start\n")
+	//x = piThreadCreate(timeToDraw);
+	//if (x != 0)
+    //   printf ("it didn't start\n")
 	
 	while(1)
 	{
@@ -108,6 +108,7 @@ int main(void)
 				led[c][r][CLR_GREEN] = gcol;
 			}
         }
+		drawMap();
 	}
 	
 	return 0;
@@ -116,9 +117,9 @@ int main(void)
 // Functions
 void horizGrad(const unsigned char clr, const unsigned char dir)
 {
-	for(cols = 0; cols < COLS; col++)
+	for(cols = 0; cols < COLS; cols++)
 	{
-		for(rows = 0; rows < ROWS; row++)
+		for(rows = 0; rows < ROWS; rows++)
 		{
 			led[cols][rows][clr] = (dir ? cols : COLS - cols) *
 				((float)PWM_MAX / COLS);
@@ -128,9 +129,9 @@ void horizGrad(const unsigned char clr, const unsigned char dir)
 
 void vertGrad(const unsigned char clr, const unsigned char dir)
 {
-	for(cols = 0; cols < COLS; col++)
+	for(cols = 0; cols < COLS; cols++)
 	{
-		for(rows = 0; rows < ROWS; row++)
+		for(rows = 0; rows < ROWS; rows++)
 		{
 			led[cols][rows][clr] = (dir ? rows : ROWS - rows) * 
 				((float)PWM_MAX / ROWS);
