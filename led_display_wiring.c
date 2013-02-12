@@ -104,9 +104,9 @@ int main(void)
 // Functions
 void horizGrad(const unsigned char clr, const unsigned char dir)
 {
-	for(unsigned int col = 0; col < COLS; col++)
+	for(col = 0; col < COLS; col++)
 	{
-		for(unsigned int row = 0; row < ROWS; row++)
+		for(row = 0; row < ROWS; row++)
 		{
 			led[col][row][clr] = (dir ? col : COLS - col) *
 				((float)PWM_MAX / COLS);
@@ -116,9 +116,9 @@ void horizGrad(const unsigned char clr, const unsigned char dir)
 
 void vertGrad(const unsigned char clr, const unsigned char dir)
 {
-	for(unsigned char col = 0; col < COLS; col++)
+	for(col = 0; col < COLS; col++)
 	{
-		for(unsigned char row = 0; row < ROWS; row++)
+		for(row = 0; row < ROWS; row++)
 		{
 			led[col][row][clr] = (dir ? row : ROWS - row) * 
 				((float)PWM_MAX / ROWS);
