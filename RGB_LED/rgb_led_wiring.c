@@ -44,12 +44,12 @@ int main(void)
 		exit (1);
 
 	// Set RPI data pins to be output
-	pinMode(P_RED, OUTPUT);
-	pinMode(P_GREEN, OUTPUT);
-	pinMode(P_BLUE, OUTPUT);
-	pinMode(P_PWR, OUTPUT);
-	pinMode(P_LATCH, OUTPUT);
-	pinMode(P_CLK, OUTPUT);
+	pinMode(P1_RED, OUTPUT);
+	pinMode(P1_GREEN, OUTPUT);
+	pinMode(P1_BLUE, OUTPUT);
+	pinMode(P2_RED, OUTPUT);
+	pinMode(P2_GREEN, OUTPUT);
+	pinMode(P2_BLUE, OUTPUT);
 	
 	//x = piThreadCreate(timeToDraw);
 	//if (x != 0)
